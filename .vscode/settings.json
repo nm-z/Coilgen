@@ -1,0 +1,8 @@
+{
+    "python.pythonPath": "/home/nate/Coilgen/Coilgen/venv/bin/python",
+    "python.analysis.extraPaths": [
+        "/home/nate/Coilgen/Coilgen/venv/lib/python3.12/site-packages",
+        "/home/nate/Coilgen/Coilgen/venv/Lib/site-packages"
+    ],
+    "python.analysis.useLibraryCodeForTypes": true
+}

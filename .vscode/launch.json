@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run PCB Coil Designer",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/pcb_coil_designer.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "/home/nate/Coilgen/Coilgen/venv/lib/python3.12/site-packages"
+            }
+        },
+        {
+            "name": "Run Unit Tests",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/test_pcb_coil_designer.py",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "/home/nate/Coilgen/Coilgen/venv/lib/python3.12/site-packages"
+            }
+        }
+    ]
+}
