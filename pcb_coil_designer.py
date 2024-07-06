@@ -36,7 +36,6 @@ def generate_coil(turns, width, spacing):
     logging.debug(f'Generated coil with {len(points)} points')
     return coil
 
-
 # Function to update coil visualization
 def update_coil():
     try:
