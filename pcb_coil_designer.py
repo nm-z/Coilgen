@@ -3,37 +3,35 @@ from tkinter import ttk, messagebox, filedialog
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import shapely.geometry as sg
-from shapely.affinity import translate, rotate
 import ezdxf
 import svgwrite
 import logging
+import math
 
 # Configure logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Function to generate coil geometry
 def generate_coil(turns, width, spacing):
-    logging.debug(f'Starting coil generation with turns={turns}, width={width}, spacing={spacing}')
+    logging.info(f'Starting coil generation with turns={turns}, width={width}, spacing={spacing}')
     if turns <= 0 or width <= 0 or spacing < 0:
         logging.error(f'Invalid parameters: turns={turns}, width={width}, spacing={spacing}')
         raise ValueError("Invalid parameters for coil generation")
     
-    points = [(0, 0)]
-    x, y = 0, 0
-    step = width + spacing
-    for i in range(turns):
-        x += step
-        points.append((x, y))
-        y += step
-        points.append((x, y))
-        x -= step
-        points.append((x, y))
-        y -= step
-        points.append((x, y))
-        step += width + spacing  # Increase the step for the next turn
+    points = []
+    baseX, baseY = 0, 0  # Center of the coil
+    radius = width  # Starting radius
+    sides = 100  # Number of sides to approximate a circle
+    segangle = 360 / sides
+    segradius = spacing / sides
+
+    for i in range(turns * sides):
+        startX = baseX + (radius + segradius * i) * math.cos(math.radians(segangle * i))
+        startY = baseY + (radius + segradius * i) * math.sin(math.radians(segangle * i))
+        points.append((startX, startY))
     
     coil = sg.LineString(points)
-    logging.debug(f'Generated coil with {len(points)} points')
+    logging.info(f'Generated coil with {len(points)} points')
     return coil
 
 # Function to update coil visualization
@@ -42,7 +40,7 @@ def update_coil():
         turns = int(turns_var.get())
         width = float(width_var.get())
         spacing = float(spacing_var.get())
-        logging.debug(f'Updating coil with turns={turns}, width={width}, spacing={spacing}')
+        logging.info(f'Updating coil with turns={turns}, width={width}, spacing={spacing}')
         if turns <= 0 or width <= 0 or spacing < 0:
             logging.error(f'Invalid input values: turns={turns}, width={width}, spacing={spacing}')
             raise ValueError("Invalid input values")
@@ -64,7 +62,7 @@ def export_coil():
         turns = int(turns_var.get())
         width = float(width_var.get())
         spacing = float(spacing_var.get())
-        logging.debug(f'Exporting coil with turns={turns}, width={width}, spacing={spacing}')
+        logging.info(f'Exporting coil with turns={turns}, width={width}, spacing={spacing}')
         if turns <= 0 or width <= 0 or spacing < 0:
             logging.error(f'Invalid input values: turns={turns}, width={width}, spacing={spacing}')
             raise ValueError("Invalid input values")
